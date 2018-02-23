@@ -19,6 +19,9 @@ export function signinUser({ email, password}) {
                 // -update state to indicate user is authenticated
                 dispatch({ type: AUTH_USER });
                 // -save the JWT token
+                localStorage.setItem('token', response.data.token);
+                // localStorage is a "storage" for one single web browser. Does not get cleared when user clicks on refresh button, close window, etc.
+
                 // -redirect to the route '/feature'
                 browserHistory.push('/feature');
             })
