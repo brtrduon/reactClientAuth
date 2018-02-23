@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import { AUTH_USER } from './types';
 
 const ROOT_URL = 'http://localhost:8000';
 
@@ -16,6 +17,7 @@ export function signinUser({ email, password}) {
             .then(response => {
                 // if request is good:
                 // -update state to indicate user is authenticated
+                dispatch({ type: AUTH_USER });
                 // -save the JWT token
                 // -redirect to the route '/feature'
                 browserHistory.push('/feature');
