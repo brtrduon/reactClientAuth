@@ -3,11 +3,17 @@ import { reduxForm } from 'redux-form';
 import * as actions from '../../actions';
 
 class Signup extends Component {
+    handleFormSubmit(formProps) {
+        // call the action creator to sign up the user
+        this.props.signupUser(formProps);
+        // we don't need to pass an object into 'signupUser' b/c all the formProps are already being passed into 'handleSubmit'
+    }
+
     render() {
         const { handleSubmit, fields: { email, password, confirm_password }} = this.props;
         
         return (
-            <form>
+            <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                 <fieldset className='form-group'>
                     <label>Email:</label>
                     <input className='form-control' {...email} />
@@ -57,4 +63,6 @@ export default reduxForm({
     form: 'signup',
     fields: ['email', 'password', 'confirm_password'],
     validate
-})(Signup);
+}, null, actions)(Signup);
+
+// reminder: when we use the reduxForm helper, we need to pass in 'actions' as our third argument
