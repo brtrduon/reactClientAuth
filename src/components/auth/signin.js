@@ -8,6 +8,16 @@ class Signin extends Component {
         this.props.signinUser({ email, password });
     }
 
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return (
+                <div className='alert alert-danger'>
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
+
     render() {
         const { handleSubmit, fields: { email, password } } = this.props;
         // reminder: handleSubmit is a helper that comes from redux-form
@@ -21,16 +31,23 @@ class Signin extends Component {
                 </fieldset>
                 <fieldset className='form-group'>
                     <label>Password:</label>
-                    <input {...password} className='form-control' />
+                    <input {...password} type='password' className='form-control' />
                 </fieldset>
+                {this.renderAlert()}
                 <button action='submit' className='btn btn-primary'>Sign in</button>
             </form>  
         );
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        errorMessage: state.auth.error
+    };
+}
+
 export default reduxForm({
     form: 'signin',
     fields: ['email', 'password']
-}, null, actions)(Signin);
+}, mapStateToProps, actions)(Signin);
 // reminder: the 1st set of parenthesis is for config and the 2nd set of parenthesis is for the name of our component we want to export

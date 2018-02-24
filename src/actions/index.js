@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import { AUTH_USER } from './types';
+import { AUTH_USER, AUTH_ERROR } from './types';
 
 const ROOT_URL = 'http://localhost:8000';
 
@@ -13,7 +13,7 @@ export function signinUser({ email, password}) {
 
 
         // submit email/password to the server
-        axios.post(`${ROOT_URL}/signin`, { email, password })
+        axios.post(`${ROOT_URL}/signin`, { email, password }) 
             .then(response => {
                 // if request is good:
                 // -update state to indicate user is authenticated
@@ -28,8 +28,15 @@ export function signinUser({ email, password}) {
             .catch(() => {
                 // if request is bad:
                 // -show an error to the user
-
+                dispatch(authError('Bad login info'));
             });
     
+    }
+}
+
+export function authError(error) {
+    return {
+        type: AUTH_ERROR,
+        payload: error
     }
 }
