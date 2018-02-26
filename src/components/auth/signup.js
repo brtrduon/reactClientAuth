@@ -9,6 +9,16 @@ class Signup extends Component {
         // we don't need to pass an object into 'signupUser' b/c all the formProps are already being passed into 'handleSubmit'
     }
 
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return (
+                <div className='alert alert-danger'>
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
+    }
+
     render() {
         const { handleSubmit, fields: { email, password, confirm_password }} = this.props;
         
@@ -29,6 +39,7 @@ class Signup extends Component {
                     <input className='form-control' {...confirm_password} type='password' />
                     {confirm_password.touched && confirm_password.error && <div className='error'>{confirm_password.error}</div>}
                 </fieldset>
+                {this.renderAlert()}
                 <button action='submit' className='btn btn-primary'>Sign Up</button>
             </form>
             // the error messages are displaying on keydown
@@ -59,10 +70,16 @@ function validate(formProps) {
     return errors;
 }
 
+function mapStateToProps(state) {
+    return {
+        errorMessage: state.auth.error
+    };
+}
+
 export default reduxForm({
     form: 'signup',
     fields: ['email', 'password', 'confirm_password'],
     validate
-}, null, actions)(Signup);
+}, mapStateToProps, actions)(Signup);
 
 // reminder: when we use the reduxForm helper, we need to pass in 'actions' as our third argument
